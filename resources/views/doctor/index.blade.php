@@ -13,6 +13,7 @@
 
     </div>
 
+    <a href="{{ url('doctor/create') }}" class="btn btn-primary">create</a>
 
     <div class="table-responsive">
       <table class="table table-striped table-sm">

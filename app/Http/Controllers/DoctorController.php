@@ -22,9 +22,9 @@ class DoctorController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create() : ViewView
     {
-        //
+        return view('doctor.create');
     }
 
     /**
@@ -38,15 +38,17 @@ class DoctorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Doctor $doctor)
+    public function show(string $id)
     {
-        //
+        return view('doctor.show', [
+            'id' => $id
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Doctor $doctor)
+    public function edit(string $id)
     {
         //
     }
@@ -54,7 +56,7 @@ class DoctorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Doctor $doctor)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -62,7 +64,7 @@ class DoctorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Doctor $doctor)
+    public function destroy(string $id)
     {
         //
     }

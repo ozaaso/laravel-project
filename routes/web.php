@@ -11,6 +11,5 @@ Route::get('/dashboard', function () {
     return view('dashboard.index');
 });
 
-Route::get('doctor', [DoctorController::class, 'index']);
-
+Route::resource('doctors', DoctorController::class);
 
