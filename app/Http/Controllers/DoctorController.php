@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illumiante\Contracts\View\View;
 use Illuminate\Contracts\View\View as ViewView;
 use Illuminate\Http\Resources\Json\JsonResource;
+use PhpParser\Node\Stmt\TryCatch;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Illuminate\Support\Str;
 
 class DoctorController extends Controller
 {
@@ -16,7 +18,7 @@ class DoctorController extends Controller
      */
     public function index() : ViewView | JsonResource
     {
-        $data = Doctor::get(['uuid', 'name','email', 'phone']);
+        $data = Doctor::latest()->limit(5)->get(['uuid', 'name','email', 'phone']);
         return view('doctor.index',[
             'doctorsku' => $data
         ]);
@@ -35,7 +37,18 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $data = $request->only('name', 'email', 'phone');
+        try{
+            $data['uuid']= Str::uuid();
+            Doctor::create($data);
+            return redirect('/doctor')->with('success', 'Data berhasil ditambahkan!');
+
+        }catch(\Exception $error){
+            return redirect('/doctor/create')->with('error', $error->getMessage());
+
+        }
+
     }
 
     /**
@@ -43,9 +56,16 @@ class DoctorController extends Controller
      */
     public function show(string $id)
     {
-        return view('doctor.show', [
-            'id' => $id
+        $data = Doctor::where('uuid', $id)->firstOrFail();
+
+        return view('doctor.show',
+        [
+            //'doctor' nanti di halaman folder doctor/show,
+            //bisa dipanggil valuenya dengan variable {{$doctor}}
+            //jika ingin memanggil value didalamnya {{$doctor->nama}}
+            'doctor' => $data
         ]);
+
     }
 
     /**

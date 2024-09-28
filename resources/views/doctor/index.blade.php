@@ -12,7 +12,11 @@
       <h1 class="h2">@yield('title')</h1>
 
     </div>
-
+    @session('success')
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endsession
     <a href="{{ url('doctor/create') }}" class="btn btn-primary">create</a>
 
     <div class="table-responsive">
