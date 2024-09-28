@@ -16,7 +16,10 @@ class DoctorController extends Controller
      */
     public function index() : ViewView | JsonResource
     {
-        return view('doctor.index');
+        $data = Doctor::get(['uuid', 'name','email', 'phone']);
+        return view('doctor.index',[
+            'doctorsku' => $data
+        ]);
     }
 
     /**

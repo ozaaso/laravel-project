@@ -8,9 +8,9 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url('/doctor') }}">
+          <a class="nav-link" href="{{ url('/doctors') }}">
             <span data-feather="file"></span>
-            Doctor
+            Doctors
           </a>
         </li>
 
