@@ -13,3 +13,6 @@ Route::get('/dashboard', function () {
 
 Route::resource('doctor', DoctorController::class);
 
+Route::get('/doctor/search/name/{name}', [DoctorController::class, 'searchByName'])->name('doctor.search.name');
+
+

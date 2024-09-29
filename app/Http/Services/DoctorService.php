@@ -56,5 +56,15 @@ class DoctorService
         $dataDb = $this->getById($id);
         return $dataDb->delete();
     }
+
+
+    public function searchByName(string $query)
+    {
+        // Melakukan query untuk mencari berdasarkan nama atau email
+        return Doctor::where('name', 'like', "%{$query}%")
+        ->orWhere('email', 'like', "%{$query}%")
+        ->select(['uuid', 'name', 'email', 'phone'])
+        ->get();
+    }
 }
 

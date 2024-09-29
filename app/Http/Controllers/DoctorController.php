@@ -121,4 +121,13 @@ class DoctorController extends Controller
 
         }
     }
+
+
+    public function searchByName(string $query)
+    {
+        $doctors = $this->doctorService->searchByName($query);
+        return view('doctor.search', [
+            'doctorsku' => $doctors
+        ]);
+    }
 }
