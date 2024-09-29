@@ -35,7 +35,16 @@
                 @endif
             </td>
         </tr>
+        <tr>
+            <th>Created at</th>
+            <td>{{$doctor->created_at}}</td>
+        </tr>
+        <tr>
+            <th>Updated at</th>
+            <td>{{$doctor->updated_at}}</td>
+        </tr>
     </table>
+    
     <div class="float-end">
         <a href="{{url('doctor')}}" class="btn btn-primary">back</a>
     </div>

@@ -1,5 +1,5 @@
 @extends('layout.template')
-@section('title', 'add new Doctor')
+@section('title', 'edit Doctor')
 
 
 
@@ -22,16 +22,18 @@
             </div>
             @endsession
 
-            <form action="{{url('doctor')}}" method="POST">
+            <form action="{{url('doctor/'.$doctor->uuid)}}" method="POST">
+                @method('PUT')
                 @csrf
-                <x-input label="Name" name="name"></x-input>
+                <x-input label="Name" name="name" value="{{$doctor->name}}"></x-input>
 
-                <x-input label="Email" name="email"></x-input>
+                <x-input label="Email" name="email" value="{{$doctor->email}}"></x-input>
 
-                <x-input label="Phone" name="phone"></x-input>
+                <x-input label="Phone" name="phone" value="{{$doctor->phone}}"></x-input>
                 <label for="gender">Gender</label>
                 <select name="gender" id="gender" class="form-select">
-                    <option value="" hidden>-choose-</option>
+                    <option value="{{$doctor->gender}}" hidden>{{$doctor->gender}}</option>
+                    {{-- <option value="" hidden>-choose-</option> --}}
                     <option value="male">male</option>
                     <option value="female">female</option>
                 </select>

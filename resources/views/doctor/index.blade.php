@@ -1,5 +1,5 @@
 @extends('layout.template')
-@section('title', 'Doctor')
+@section('title', 'Edit Doctor')
 
 
 
@@ -12,11 +12,18 @@
       <h1 class="h2">@yield('title')</h1>
 
     </div>
+    
     @session('success')
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
     @endsession
+    @session('error')
+    <div class="alert alert-danger">
+        Ups Sorry Error, please kindly try again.
+    </div>
+    @endsession
+
     <a href="{{ url('doctor/create') }}" class="btn btn-primary">create</a>
 
     <div class="table-responsive">
@@ -33,7 +40,7 @@
         <tbody>
             @foreach ($doctorsku as $doctor)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ ($doctorsku->currentPage() - 1)*$doctorsku->perPage() + $loop->iteration}}</td>
                     <td>{{ $doctor->name }}</td>
                     <td>{{ $doctor->email }}</td>
                     <td>{{ $doctor->phone }}</td>
@@ -49,6 +56,8 @@
             @endforeach
         </tbody>
       </table>
+      <!-- Navigasi Pagination -->
+      {{ $doctorsku->links() }}
     </div>
   </main>
 

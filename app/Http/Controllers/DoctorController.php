@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\DoctorService;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
+
 use Illumiante\Contracts\View\View;
 use Illuminate\Contracts\View\View as ViewView;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -13,14 +15,21 @@ use Illuminate\Support\Str;
 
 class DoctorController extends Controller
 {
+
+
+    public function __construct(private DoctorService $doctorService)
+    {
+
+    }
     /**
      * Display a listing of the resource.
      */
     public function index() : ViewView | JsonResource
     {
-        $data = Doctor::latest()->limit(5)->get(['uuid', 'name','email', 'phone']);
+        // $dataDb = Doctor::latest()->limit(5)->get(['uuid', 'name','email', 'phone']);
+        $dataDb = $this->doctorService->getWithPaginate();
         return view('doctor.index',[
-            'doctorsku' => $data
+            'doctorsku' => $dataDb
         ]);
     }
 
@@ -38,10 +47,9 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
 
-        $data = $request->only('name', 'email', 'phone');
+        $dataDb = $request->only('name', 'email', 'phone');
         try{
-            $data['uuid']= Str::uuid();
-            Doctor::create($data);
+            $this->doctorService->create($dataDb);
             return redirect('/doctor')->with('success', 'Data berhasil ditambahkan!');
 
         }catch(\Exception $error){
@@ -56,14 +64,14 @@ class DoctorController extends Controller
      */
     public function show(string $id)
     {
-        $data = Doctor::where('uuid', $id)->firstOrFail();
+        $dataDb = $this->doctorService->getById($id);
 
         return view('doctor.show',
         [
             //'doctor' nanti di halaman folder doctor/show,
             //bisa dipanggil valuenya dengan variable {{$doctor}}
             //jika ingin memanggil value didalamnya {{$doctor->nama}}
-            'doctor' => $data
+            'doctor' => $dataDb
         ]);
 
     }
@@ -73,7 +81,10 @@ class DoctorController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        $dataDb = $this->doctorService->getById($id);
+        return view('doctor.edit', ['doctor' => $dataDb]);
+        // return $dataDb;
     }
 
     /**
@@ -81,7 +92,18 @@ class DoctorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try{
+
+            $this->doctorService->updateDoctor($request, $id);
+
+            return redirect('/doctor')->with('success', 'Data berhasil diupdate!');
+
+        }catch(\Exception $error){
+            return redirect('/doctor/'.$id.'/edit')->with('error', $error->getMessage());
+
+        }
+
+
     }
 
     /**
@@ -89,6 +111,14 @@ class DoctorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
+
+        try{
+            $this->doctorService->deleteDoctor( $id );
+            return redirect('/doctor')->with('success', 'Data berhasil dihapus!');
+        }catch(\Exception $error){
+            return redirect('/doctor')->with('error', $error->getMessage());
+
+        }
     }
 }
